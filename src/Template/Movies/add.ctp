@@ -16,11 +16,12 @@
     <?= $this->Form->create($movie) ?>
     <fieldset>
         <legend><?= __('Add Movie') ?></legend>
-        <?php
-            echo $this->Form->control('name');
-            echo $this->Form->control('description');
-            echo $this->Form->control('duration');
-        ?>
+      <?php
+            echo $this ->Form->Control('name');
+            echo $this ->Form->Control('description');
+            echo $this ->Form->Control('duration');
+            echo $this ->Form->Control('releasedate');
+      ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
