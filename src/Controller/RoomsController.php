@@ -38,9 +38,30 @@ class RoomsController extends AppController
         $room = $this->Rooms->get($id, [
             'contain' => ['Showtimes']
         ]);
-
+        $showtime = $this->Rooms->Showtimes->find()->where(['Showtimes.room_id'=>$id])->contain(['Movies','Rooms']);
         $this->set('room', $room);
+        $this->set('showtime', $showtime);
         $this->set('_serialize', ['room']);
+        
+        foreach ($showtime as $article) {
+            echo $article;}
+    
+    
+       /* $planning = array (
+
+        'Lundi' => $lundi = array (),
+
+        'Mardi' => 'Dupont',
+
+        'Mercredi' => '3 Rue du Paradis',
+
+        'Jeudi' => 'Marseille',
+        
+        'Vendredi' => 'François',
+        
+        'Samedi' => 'François',
+        
+        'Dimanche' => 'François');*/
     }
 
     /**
