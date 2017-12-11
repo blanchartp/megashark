@@ -35,55 +35,26 @@ class RoomsController extends AppController
      */
     public function view($id = null)
     {
-        $room = $this->Rooms->get($id, [
-            'contain' => ['Showtimes']
+       $room = $this->Rooms->get($id, [
+            'contain' => [
+            ]
         ]);
-        $showtime = $this->Rooms->Showtimes->find()->where(['Showtimes.room_id'=>$id])->contain(['Movies','Rooms']);
+        $showtimes = $this
+            ->Rooms
+            ->Showtimes
+            ->find()
+            ->contain('Movies','Rooms')
+            ->where(['Showtimes.room_id =' => $id,
+                     'Showtimes.start >=' => (new \DateTime('monday this week')),
+                     'Showtimes.end <=' => (new \DateTime('sunday this week'))]);
+       
+        $this->set('showtimes',$showtimes);
+       
         $this->set('room', $room);
-        $this->set('showtime', $showtime);
-        $this->set('_serialize', ['room']);
-        
-        foreach ($showtime as $article) {
-            echo $article;}
-    
-    
-       /* $planning = array (
-
-        'Lundi' => $lundi = array (),
-
-        'Mardi' => 'Dupont',
-
-        'Mercredi' => '3 Rue du Paradis',
-
-        'Jeudi' => 'Marseille',
-        
-        'Vendredi' => 'François',
-        
-        'Samedi' => 'François',
-        
-        'Dimanche' => 'François');*/
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $room = $this->Rooms->newEntity();
-        if ($this->request->is('post')) {
-            $room = $this->Rooms->patchEntity($room, $this->request->getData());
-            if ($this->Rooms->save($room)) {
-                $this->Flash->success(__('The room has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The room could not be saved. Please, try again.'));
-        }
-        $this->set(compact('room'));
         $this->set('_serialize', ['room']);
     }
+
+
 
     /**
      * Edit method
